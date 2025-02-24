@@ -1,0 +1,133 @@
+<SignupScreen>
+    name: 'signup screen'
+    BoxLayout:
+        orientation: "vertical"
+        CustomBoxLayout:
+            adaptive_height: True
+            padding: "20dp", "15dp", "20dp", "10dp"
+            canvas:
+                Color:
+                    rgba: app.theme_cls.bg_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            IconButton:
+                icon: "arrow-left"
+                bg_color: app.theme_cls.accent_color
+            CustomButton:
+                adaptive_height: True
+                text_size: self.width, None
+                text: "Continue as guest"
+                color: app.theme_cls.primary_color
+                halign: "right"
+                -bg_color: 0, 0, 0, 0
+                underline: True
+                pos_hint: {"center_y": .5}
+        ScrollView:
+            effect_cls: LowerScrollEffect
+            bar_width: 0
+            do_scroll_x: False
+            scroll_distance: 0
+            CustomBoxLayout:
+                spacing: "25dp"
+                adaptive_height: True
+                orientation: "vertical"
+                padding: "20dp"
+                CustomLabel:
+                    text: "Let's get started"
+                    font_size: "32sp"
+                    halign: "center"
+                    adaptive_height: True
+                CustomLabel:
+                    text: "We just need a bit more information. Please enter your details to get started"
+                    adaptive_height: True
+                    halign: "center"
+                    font_size: "14sp"
+                CustomBoxLayout:
+                    spacing: "10dp"
+                    adaptive_height: True
+                    CustomBoxLayout:
+                        adaptive_size: True
+                        orientation: "vertical"
+                        spacing: "5dp"
+                        CustomLabel:
+                            text: "Country [color=ff0000]*[/color]"
+                            adaptive_height: True
+                            font_size: "14sp"
+                            bold: True
+                            markup: True
+                        CustomLabel:
+                            id: country_code
+                            bg_color: app.theme_cls.accent_color
+                            radius: "10dp"
+                            padding: "15dp", "18dp"
+                            adaptive_size: True
+                            text: "+234"
+                    TagTextInput:
+                        id: phone_number
+                        tag: "Phone number [color=ff0000]*[/color]"
+                        hint_text: "08000000000"
+                        input_filter: "int"
+                        input_type: "number"
+                TagTextInput:
+                    id: email
+                    tag: "Email address [color=ff0000]*[/color]"
+                    hint_text: "example@email.com"
+                    input_type: "mail"
+                CustomBoxLayout:
+                    adaptive_height: True
+                    spacing: "10dp"
+                    TagTextInput:
+                        id: first_name
+                        tag: "First name [color=ff0000]*[/color]"
+                        hint_text: "e.g Emeka"
+                        input_type: "text"
+                    TagTextInput:
+                        id: last_name
+                        tag: "Last name [color=ff0000]*[/color]"
+                        hint_text: "e.g Ayomide"
+                        input_type: "text"
+                CustomBoxLayout:
+                    adaptive_height: True
+                    orientation: "vertical"
+                    spacing: "10sp"
+                    CustomButton:
+                        id: btn
+                        size_hint_y: None
+                        height: "45dp"
+                        radius: self.height / 2
+                        text: "Continue"
+                        bold: True
+                        on_release: root.create_account()
+                    CustomLabel:
+                        text:
+                            f"By signing up, you agree to Chollof's [color={primary_color}]Terms of use[/color]"\
+                            f" and [color={primary_color}]Privacy Policy[/color]"
+                        adaptive_height: True
+                        halign: "center"
+                        font_size: "14sp"
+                        markup: True
+
+
+<TagTextInput@CustomBoxLayout>:
+    adaptive_height: True
+    orientation: "vertical"
+    spacing: "5dp"
+    tag: ""
+    hint_text: ""
+    text: txt_input.text
+    input_type: "null"
+    input_filter: None
+    CustomLabel:
+        text: root.tag
+        adaptive_height: True
+        markup: True
+        font_size: "14sp"
+        bold: True
+    CustomTextInput:
+        id: txt_input
+        padding: "15dp", "18dp"
+        radius: "10dp"
+        hint_text: root.hint_text
+        input_type: root.input_type
+        input_filter: root.input_filter

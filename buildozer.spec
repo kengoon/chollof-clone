@@ -13,7 +13,7 @@ package.domain = com.chopsome
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,kv,atlas,ttf
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -179,7 +179,7 @@ android.apptheme = @style/Theme.App
 
 # (list) List of Java files to add to the android project (can be java or a
 # directory containing the files)
-#android.add_src =
+android.add_src = java
 
 # (list) Android AAR archives to add
 #android.add_aars =
@@ -205,7 +205,8 @@ android.add_resources = res
 # (list) Gradle dependencies to add
 android.gradle_dependencies = io.github.simplejnius:sjfirebase:1.3.0,
     com.google.firebase:firebase-auth,com.google.firebase:firebase-firestore,
-    androidx.appcompat:appcompat:1.7.0
+    androidx.appcompat:appcompat:1.7.0,com.google.android.play:integrity:1.4.0,
+    androidx.browser:browser:1.8.0
 
 # (bool) Enable AndroidX support. Enable when 'android.gradle_dependencies'
 # contains an 'androidx' package, or any package from Kotlin source.
@@ -412,7 +413,7 @@ log_level = 2
 warn_on_root = 1
 
 # (str) Path to build artifact storage, absolute or relative to spec file
-# build_dir = ./.buildozer
+build_dir = /home/kengo/PycharmProjects/chollof/.buildozer
 
 # (str) Path to build output (i.e. .apk, .aab, .ipa) storage
 # bin_dir = ./bin

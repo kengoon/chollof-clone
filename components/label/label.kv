@@ -1,6 +1,31 @@
-<CustomLabel>
+#:import md_icons ui.icon_definitions.md_icons
+
+
+<CustomLabel>:
     text_size:
         (self.width if not self.adaptive_width else None) \
         if not self.adaptive_size else None, \
         None
-    color: self.text_color
+    color: app.theme_cls.text_color
+    canvas.before:
+        Color:
+            rgba: self.bg_color
+        SmoothRoundedRectangle:
+            size: self.size
+            pos: self.pos
+            # FIXME: Sometimes the radius has the value [], which get a
+            # `GraphicException:
+            #     Invalid radius value, must be list of tuples/numerics` error`
+            radius: self.radius
+
+<Icon>:
+    size_hint: None, None
+    text_size: None, None
+    size: self.texture_size
+    font_size: "24sp"
+    text:
+        ( \
+        u"{}".format(md_icons[self.icon]) \
+        if self.icon in md_icons else \
+        "blank" \
+        )

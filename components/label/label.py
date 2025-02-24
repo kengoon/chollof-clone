@@ -1,19 +1,21 @@
-__all__ = ("CustomLabel",)
+__all__ = ("CustomLabel", "Icon")
 
 from kivy.core.clipboard import Clipboard
-from kivy.properties import BooleanProperty
+from kivy.properties import BooleanProperty, StringProperty, VariableListProperty, \
+    ColorProperty
 from kivy.uix.label import Label
-from components.behaviors import TouchBehavior, AdaptiveBehavior
-from ui.theme import Theme
+from components.behaviors import AdaptiveBehavior
 from kivy.lang import Builder
 from os.path import join, dirname, basename
 
 Builder.load_file(join(dirname(__file__), basename(__file__).split(".")[0] + ".kv"))
 
 
-class CustomLabel(Theme, TouchBehavior, Label, AdaptiveBehavior):
+class CustomLabel(AdaptiveBehavior, Label):
     __events__ = ("on_copy",)
     allow_copy = BooleanProperty(False)
+    bg_color = ColorProperty("#00000000")
+    radius = VariableListProperty(0)
 
     def on_long_touch(self, touch, *args) -> None:
         if self.allow_copy and self.collide_point(*touch.pos):
@@ -25,4 +27,5 @@ class CustomLabel(Theme, TouchBehavior, Label, AdaptiveBehavior):
 
 
 class Icon(CustomLabel):
-    pass
+    icon = StringProperty()
+    font_name = StringProperty("assets/fonts/materialdesignicons-webfont.ttf")

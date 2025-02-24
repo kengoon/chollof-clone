@@ -1,16 +1,34 @@
-# This is a sample Python script.
+from kivy.app import App
+from kivy.core.window import Window
+from kivy.loader import Loader
+from kivy.properties import ObjectProperty
+from components.transition import SharedAxisTransition
+from ui.theme import ThemeManager
+from components.factory_register import register_factory
+from features.screenmanager import AppScreenManager
+from kivy.lang import Builder
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+Loader.error_image = "assets/images/transparent.png"
+Loader.loading_image = "assets/images/transparent.png"
+Window.softinput_mode = "below_target"
+Builder.load_file("imports.kv")
+register_factory()
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+class ChollofApp(App):
+    theme_cls = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.theme_cls = ThemeManager()
+        self.theme_cls.theme_style = "Dark"
+
+    def build(self):
+        sm = AppScreenManager(transition=SharedAxisTransition())
+        sm.current = "signup screen"
+        return sm
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    ChollofApp().run()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/

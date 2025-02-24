@@ -172,7 +172,7 @@ class CommonElevationBehavior(Widget):
         class ElevationWidget(CommonElevationBehavior, BackgroundColorBehavior):
             def __init__(self, **kwargs):
                 super().__init__(**kwargs)
-                self.md_bg_color = "blue"
+                self.bg_color = "blue"
 
 
         class Example(MDApp):
@@ -222,7 +222,7 @@ class CommonElevationBehavior(Widget):
         class ElevationWidget(CommonElevationBehavior, BackgroundColorBehavior):
             def __init__(self, **kwargs):
                 super().__init__(**kwargs)
-                self.md_bg_color = "blue"
+                self.bg_color = "blue"
 
 
         class Example(MDApp):

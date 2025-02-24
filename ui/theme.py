@@ -1,35 +1,45 @@
 from kivy.app import App
+from kivy.clock import mainthread
 from kivy.core.window import Window
-from kivy.properties import ColorProperty, OptionProperty
+from kivy.event import EventDispatcher
+from kivy.properties import ColorProperty, OptionProperty, ObjectProperty
 
 
-class Theme:
+class ThemeManager(EventDispatcher):
     bg_color = ColorProperty()
     bg_color_light = ColorProperty("#FFFFFF")
     bg_color_dark = ColorProperty("#000000")
+    card_color = ColorProperty()
+    card_color_light = ColorProperty("#FFFFFF")
+    card_color_dark = ColorProperty("#000000")
     primary_color = ColorProperty()
-    primary_color_light = ColorProperty("#8AC3D4")
-    primary_color_dark = ColorProperty("#8AC3D4")
+    primary_color_light = ColorProperty("#EA5C22")
+    primary_color_dark = ColorProperty("#EA5C22")
     secondary_color = ColorProperty()
     secondary_color_light = ColorProperty()
     secondary_color_dark = ColorProperty()
     accent_color = ColorProperty()
-    accent_color_light = ColorProperty()
-    accent_color_dark = ColorProperty()
+    accent_color_light = ColorProperty([0, 0, 0, .05])
+    accent_color_dark = ColorProperty([1, 1, 1, .05])
+    shadow_color = ColorProperty()
+    shadow_color_light = ColorProperty([0, 0, 0, .65])
+    shadow_color_dark = ColorProperty([1, 1, 1, .65])
     text_color = ColorProperty()
     text_color_light = ColorProperty("#3F3F41")
     text_color_dark = ColorProperty("#FFFFFF")
-    theme_style = OptionProperty(None, options=["Light", "Dark"])
+    transparent_color = ColorProperty("#00000000")
+    disabled_color = ColorProperty([.4, .4, .4, .7])
+    theme_style = OptionProperty("Light", options=["Light", "Dark"])
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.theme_style = App.get_running_app().theme_style
-        App.get_running_app().bind(theme_style=self.setter("theme_style"))
+        self.on_theme_style()
 
-    def on_theme_style(self, *args):
+    @mainthread
+    def on_theme_style(self, *_):
         self.set_theme()
 
-    def set_theme(self, *args):
+    def set_theme(self, *_):
         if self.theme_style == "Light":
             self.bg_color = self.bg_color_light
             self.primary_color = self.primary_color_light
@@ -44,3 +54,11 @@ class Theme:
             self.text_color = self.text_color_dark
 
         Window.clearcolor = self.bg_color
+
+
+class Theme:
+    theme_cls = ObjectProperty()
+
+    def __init__(self, *args, **kwargs):
+        self.theme_cls = App.get_running_app().theme_cls
+        super().__init__(*args, **kwargs)

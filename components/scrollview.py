@@ -2,9 +2,9 @@ from kivy.uix.recycleview import RecycleView
 from kivy.clock import Clock
 from kivy.properties import OptionProperty, BooleanProperty, ObjectProperty, NumericProperty, ListProperty
 from kivy.animation import Animation
-from kivymd.uix.behaviors import StencilBehavior
+from components.behaviors import StencilBehavior
 
-from Components.effects import LowerScrollEffect, LowerDampedScrollEffect
+from components.effects import LowerScrollEffect, LowerDampedScrollEffect
 
 __all__ = ("LEFT", "RIGHT", "DOWN", "UP", "NULL", "RealRecycleView")
 

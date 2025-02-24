@@ -31,7 +31,7 @@ Usage
 
 
     MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+        bg_color: self.theme_cls.backgroundColor
 
         TouchBehaviorButton:
             text: "TouchBehavior"

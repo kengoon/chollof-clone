@@ -1,0 +1,401 @@
+<MenuScreen>
+    name: 'menu screen'
+    CoverImage:
+        id: cover_image
+        source: "https://nsacc.org.ng/wp-content/uploads/2021/07/Osogbo-Nigeria.jpeg"
+        size_hint_y: None
+        height: root.height/4
+        y: root.height - self.height
+    BoxLayout:
+        id: empty
+        y_: -cover_image.height + dp(20)
+        y: self.y_
+        padding: "20dp"
+        canvas.before:
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: dp(20), dp(20), 0, 0
+    RealRecycleView
+        id: rv
+        viewclass: "MenuList"
+        do_scroll_x: False
+        effect_cls: LowerScrollEffect
+        track_scroll_movement: True
+        scroll_distance: 0
+        data: [{}] * 30
+        bar_width: 0
+        on_scroll_y: root.move_eb()
+#        on_overscroll_up: root.paginate_menu()
+        RecycleBoxLayout:
+            id: rb
+            root: root
+            orientation: 'vertical'
+            size_hint_y: None
+            size: self.minimum_size
+            default_size_hint: 1, None
+            # magic value for the default height of the message
+            default_size: 0, "120dp"
+            spacing: "15dp"
+            padding: "20dp", cover_image.height + eb.height, "20dp", "100dp"
+    BoxLayout:
+        id: eb
+        orientation: "vertical"
+        y_: root.height - cover_image.height - self.height + dp(20)
+        y: self.y_
+        spacing: "10dp"
+        padding: "20dp"
+        size_hint_y: None
+        height: self.minimum_height
+        CustomBoxLayout:
+            adaptive_height: True
+            CustomLabel:
+                id: business_name
+                text: "Papi Yummy Cuisines"
+                shorten: True
+                shorten_from: "right"
+                size_hint_y: None
+                text_size: self.width, None
+                size: self.texture_size
+                font_size: "22sp"
+        Divider
+        CustomBoxLayout:
+            adaptive_height: True
+            spacing: "10dp"
+            CustomBoxLayout:
+                adaptive_size: True
+                padding: "8dp",
+                canvas:
+                    Color:
+                        rgba: .7, .7, .7, .5
+                    SmoothLine:
+                        width: 1
+                        rounded_rectangle: [self.x, self.y, self.width, self.height, dp(6)]
+                Icon:
+                    icon: "bike-fast"
+                    font_size: "18sp"
+                CustomLabel:
+                    text: "15-30 min"
+                    adaptive_size: True
+            CustomBoxLayout:
+                adaptive_size: True
+                padding: "8dp",
+                spacing: "3dp"
+                canvas:
+                    Color:
+                        rgba: .7, .7, .7, .5
+                    SmoothLine:
+                        width: 1
+                        rounded_rectangle: [self.x, self.y, self.width, self.height, dp(6)]
+                Icon:
+                    icon: "currency-ngn"
+                    font_size: "18sp"
+                CustomLabel:
+                    id: starting_price
+                    text: "450"
+                    adaptive_size: True
+
+
+    BoxLayout:
+        id: toolbar
+        size_hint_y: None
+        height: "64dp"
+        padding: "16dp", 0
+        theme_bg_color: "Custom"
+        y: root.top - self.height + dp(0.5)
+        canvas:
+            Color:
+                rgba: app.theme_cls.transparent_color if eb.y < cover_image.y - self.height else app.theme_cls.bg_color
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        IconButton
+            icon: "arrow-left"
+            pos_hint: {"center_y": .5}
+            -color: app.theme_cls.bg_color if eb.y < cover_image.y - toolbar.height else app.theme_cls.text_color
+#            on_release: root.switch_screen("restaurant screen")
+        CustomLabel:
+            id: bar_title
+            halign: "center"
+            text: business_name.text
+            bold: True
+            opacity: 0
+        IconButton:
+            icon: "magnify"
+            pos_hint: {"center_y": .5}
+            -color: app.theme_cls.bg_color if eb.y < cover_image.y - toolbar.height else app.theme_cls.text_color
+
+
+    BoxLayout:
+        id: cart_btn
+        padding: "20dp", "10dp"
+        y: -self.height - dp(20)
+#        MDCard:
+#            size_hint_y: None
+#            style: "elevated"
+#            theme_bg_color: "Custom"
+#            md_bg_color: self.theme_cls.primaryColor
+#            height: "50dp"
+#            radius: self.height / 2
+#            on_release: root.switch_screen("checkout screen")
+#            MDLabel:
+#                id: cart_btn_lbl
+#                halign: "center"
+#                bold: True
+#                theme_line_height: "Custom"
+#                line_height: 1
+#                theme_text_color: "Custom"
+#                text_color: "white"
+#    MDCircularProgressIndicator:
+#        id: pi
+#        active: True
+#        line_width: 1.5
+#        size_hint: None, None
+#        size: "40dp", "40dp"
+#        pos_hint: {"center_x": .5}
+#        y: root.height/2
+    StencilBoxLayout:
+        id: bottom_sheet
+        size_hint_y: None
+        height: root.height - dp(88)
+        orientation: "vertical"
+        spacing: "20dp"
+        radius: "20dp", "20dp", 0, 0
+        y: -root.height - dp(50)
+        canvas:
+            Color:
+                rgba: app.theme_cls.bg_color
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, .65
+            BoxShadow:
+                pos: self.pos
+                size: self.size
+                offset: 0, 0
+                spread_radius: -dp(20), -dp(20)
+                border_radius: [dp(20), dp(20), 0, 0]
+                blur_radius: 60
+#        on_close: root.on_sheet_closed()
+        BoxLayout:
+            orientation: "vertical"
+            ScrollView:
+                effect_cls: LowerScrollEffect
+                do_scroll_x: False
+                bar_width: 0
+                scroll_distance: 0
+                CustomBoxLayout:
+                    adaptive_height: True
+                    id: sheet_container
+                    orientation: "vertical"
+                    RelativeLayout:
+                        size_hint_y: None
+                        height: "170dp"
+                        CoverImage:
+                            id: meal_image
+                            radius: "16dp", "16dp", 0, 0
+                        IconButton:
+                            icon: "close"
+                            pos_hint: {"right": .98, "top": .98}
+                            bg_color: app.theme_cls.primary_color
+                            -color: "white"
+                            on_release: root.close_sheet()
+                    CustomBoxLayout:
+                        adaptive_height: True
+                        spacing: "10dp"
+                        orientation: "vertical"
+                        padding: "20dp"
+                        CustomLabel:
+                            id: meal
+                            font_size: "16sp"
+                            adaptive_height: True
+                        CustomLabel:
+                            id: meal_description
+                            adaptive_height: True
+                            font_size: "12sp"
+                            -color: app.theme_cls.disabled_color
+                        CustomLabel:
+                            id: price
+                            price: 0
+                            pack: 0
+                            font_size: "12sp"
+                            text: "From ₦{price:,.2f} + Food pack ₦{pack:,.2f}".format(price=self.price, pack=self.pack)
+                            bold: True
+                            adaptive_height: True
+                    CustomBoxLayout:
+                        adaptive_height: True
+                        orientation: "vertical"
+                        CustomBoxLayout:
+                            adaptive_height: True
+                            padding: "15dp"
+                            spacing: "20dp"
+                            canvas:
+                                Color:
+                                    rgba: 0, 0, 0, .1
+                                Rectangle:
+                                    size: self.size
+                                    pos: self.pos
+                            CustomLabel:
+                                text: "Extras"
+                                adaptive_size: True
+                                pos_hint: {"center_y": .5}
+                                font_size: "14sp"
+                            CustomLabel:
+                                color: .7, .7, .7, .5
+                                text: "Optional"
+                                padding: "10dp", "5dp"
+                                font_size: "12sp"
+                                adaptive_size: True
+                                pos_hint: {"center_y": .5}
+                                canvas.before:
+                                    Color:
+                                        rgba: .7, .7, .7, .5
+                                    SmoothLine:
+                                        width: 1
+                                        rounded_rectangle: [self.x, self.y, *self.size, self.height / 2]
+                        CustomBoxLayout:
+                            id: extra_container
+                            adaptive_height: True
+                            orientation: "vertical"
+            CustomBoxLayout:
+                id: btn_box
+                adaptive_height: True
+                padding: "20dp"
+                spacing: "10dp"
+                CustomBoxLayout:
+                    adaptive_width: True
+                    size_hint_y: None
+                    height: "45dp"
+                    pos_hint: {"center_x": .5}
+                    spacing: "20dp"
+                    canvas.before:
+                        Color:
+                            rgba: app.theme_cls.primary_color
+                        SmoothLine:
+                            width: 1
+                            rounded_rectangle: [self.x, self.y, *self.size, dp(8)]
+                    IconButton:
+                        icon: "minus"
+                        -color: app.theme_cls.primary_color
+                        pos_hint: {"center_y": .5}
+                        on_release: quantity.quantity -= 1
+                    CustomLabel:
+                        id: quantity
+                        quantity: 1
+                        text: str(self.quantity)
+                        adaptive_size: True
+                        pos_hint: {"center_y": .5}
+                        on_quantity: self.quantity = min(4, max(1, self.quantity))
+                    IconButton:
+                        -color: app.theme_cls.primary_color
+                        pos_hint: {"center_y": .5}
+                        icon: "plus"
+                        on_release: quantity.quantity += 1
+                CustomButton:
+                    id: btn
+                    total_price: 0
+                    quantity: quantity.quantity
+                    size_hint_y: None
+                    height: "45dp"
+                    radius: "8dp"
+                    on_total_price: self.text = f"Add ₦{args[1]:,.0f}"
+                    on_quantity: self.total_price = (price.price * args[1]) + price.pack
+#                    on_release: root.add_meal_to_cart()
+
+
+<MenuList>
+    spacing: "10dp"
+    padding: "10dp", "10dp", "10dp", 0
+    orientation: "vertical"
+    BoxLayout:
+        spacing: "10dp"
+        padding: 0, 0, 0, "10dp"
+        BoxLayout:
+            id: box
+            orientation: "vertical"
+            spacing: "5dp"
+            CustomLabel:
+                text: root.meal
+                shorten: True
+                shorten_from: "right"
+            CustomLabel:
+                id: content
+                text: root.content_text
+                font_size: "12sp"
+                color: .5, .5, .5, .9
+                on_width: root.shorten_text()
+            CustomLabel:
+                text: "₦" + str(root.price)
+                adaptive_height: True
+                bold: True
+        CoverImage:
+            size_hint_x: None
+            width: self.height
+            source: root.image
+            radius: "10dp"
+            pos_hint: {"center_y": .5}
+    Divider
+
+
+<ExtraList>:
+    orientation: "vertical"
+    adaptive_height: True
+    ListItem:
+        id: item
+        name: root.name
+        price: root.price
+    CustomBoxLayout:
+        opacity: int(item.active)
+        disabled: not int(item.active)
+        adaptive_height: True
+        spacing: "10dp"
+        padding: "16dp", 0
+        IconButton:
+            id: minus_widget
+            icon: "minus"
+            size: "20dp", "20dp"
+            -color: app.theme_cls.primary_color
+            font_size: "14sp"
+            on_release:
+                root.increment = False
+                root.quantity -= 1
+        CustomLabel:
+            text: str(root.quantity)
+            adaptive_size: True
+        IconButton:
+            id: plus_widget
+            icon: "plus"
+            size: "20dp", "20dp"
+            -color: app.theme_cls.primary_color
+            font_size: "14sp"
+            on_release:
+                root.increment = True
+                root.quantity += 1
+
+<ListItem@TouchRippleButtonBehavior+BoxLayout>
+    name: ""
+    price: 0
+    size_hint_y: None
+    height: "72dp"
+    padding: "16dp", "8dp"
+    spacing: "16dp"
+    active: False
+    on_release: self.active = not self.active
+    BoxLayout:
+        orientation: "vertical"
+        CustomLabel:
+            text: root.name
+            font_size: "16sp"
+            shorten: True
+        CustomLabel:
+            text: "+ ₦" + f"{root.price:,.2f}"
+            color: app.theme_cls.disabled_color
+            shorten: True
+            font_size: "14sp"
+    CustomCheckbox:
+        id: checkbox
+        active: root.active
+        pos_hint: {"center_y": .5}
+        on_active: root.active = args[1]

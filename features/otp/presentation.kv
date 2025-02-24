@@ -1,0 +1,91 @@
+<OtpScreen>
+    name: 'otp screen'
+    BoxLayout:
+        orientation: "vertical"
+        padding: "20dp"
+        spacing: "20dp"
+        IconButton:
+            icon: "arrow-left"
+            bg_color: 0, 0, 0, .05
+        CustomLabel:
+            text: "Verify your number"
+            font_size: "32sp"
+            halign: "center"
+            adaptive_height: True
+        CustomLabel:
+            text: f"We've sent 6-digit code to 08012345678 via [color={primary_color}]SMS[/color] and [color={primary_color}]Whatsapp[/color]"
+            adaptive_height: True
+            halign: "center"
+            font_size: "14sp"
+            markup: True
+        BoxLayout:
+            spacing: "10dp"
+            CustomBoxLayout:
+                adaptive_height: True
+                orientation: "vertical"
+                spacing: "15dp"
+                pos_hint: {"center_y": .7}
+                CustomLabel:
+                    text: "Enter OTP [color=ff0000]*[/color]"
+                    adaptive_height: True
+                    halign: "center"
+                    markup: True
+                    font_size: "14sp"
+                    bold: True
+                CustomTextInput:
+                    id: otp
+                    padding: "25p", "15dp"
+                    bg_color: 0, 0, 0, .05
+                    halign: "center"
+                    radius: "10dp"
+                    font_size: "22sp"
+                    input_type: "number"
+                    input_filter: "int"
+                    size_hint_x: None
+                    width: (sp(15) * 6) + dp(50)
+                    pos_hint: {"center_x": .5}
+                    on_text:
+                        if len(self.text) == 6: \
+                        self.focus = False
+
+                        if len(self.text) > 6: \
+                        self.text = self.text[:-1]
+                CustomButton:
+                    id: cbtn
+                    countdown: 60
+                    text_size: self.width, None
+                    adaptive_size: True
+                    padding: "10dp", "15dp"
+                    radius: self.height / 2
+                    halign: "center"
+                    text: "Tap here to resend OTP {}".format(("(" + str(self.countdown) + ")s") if self.countdown else "")
+                    pos_hint: {"center_x": .5}
+                    disabled: bool(self.countdown)
+                    disabled_color: app.theme_cls.disabled_color
+                    -bg_color: 0, 0, 0, .05
+                    -color: app.theme_cls.primary_color
+                    font_size: "14sp"
+        CustomBoxLayout:
+            adaptive_height: True
+            orientation: "vertical"
+            spacing: "10sp"
+            CustomButton:
+                id: btn
+                size_hint_y: None
+                height: "45dp"
+                radius: self.height / 2
+                text: "Verify"
+                bold: True
+                disabled: len(otp.text) < 6
+                disabled_color: "white"
+                -bg_color: app.theme_cls.disabled_color if self.disabled else app.theme_cls.primary_color
+                on_release: root.manager.current = "restaurant screen"
+
+<OTPField>
+    padding: "15dp", "15dp"
+    bg_color: 0, 0, 0, .05
+    halign: "center"
+    radius: "10dp"
+    input_type: "number"
+    input_filter: "int"
+    size_hint_x: None

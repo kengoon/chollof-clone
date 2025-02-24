@@ -1,0 +1,76 @@
+<LoginScreen>
+    name: 'login screen'
+    BoxLayout:
+        orientation: "vertical"
+        padding: "20dp"
+        spacing: "20dp"
+        IconButton:
+            icon: "arrow-left"
+            bg_color: 0, 0, 0, .05
+        CustomLabel:
+            text: "Welcome back"
+            font_size: "32sp"
+            halign: "center"
+            adaptive_height: True
+        CustomLabel:
+            text: "You can log back into your account using your phone number"
+            adaptive_height: True
+            halign: "center"
+            font_size: "14sp"
+        BoxLayout:
+            spacing: "10dp"
+            CustomBoxLayout:
+                adaptive_size: True
+                orientation: "vertical"
+                spacing: "5dp"
+                pos_hint: {"center_y": .7}
+                CustomLabel:
+                    text: "Country [color=ff0000]*[/color]"
+                    adaptive_height: True
+                    font_size: "14sp"
+                    bold: True
+                    markup: True
+                CustomLabel:
+                    bg_color: 0, 0, 0, .05
+                    radius: "10dp"
+                    padding: "15dp", "15dp"
+                    adaptive_size: True
+                    text: "+234"
+            CustomBoxLayout:
+                adaptive_height: True
+                orientation: "vertical"
+                spacing: "5dp"
+                pos_hint: {"center_y": .7}
+                CustomLabel:
+                    text: "Phone number [color=ff0000]*[/color]"
+                    adaptive_height: True
+                    markup: True
+                    font_size: "14sp"
+                    bold: True
+                CustomTextInput:
+                    padding: "15dp", "15dp"
+                    bg_color: 0, 0, 0, .05
+                    hint_text: "08000000000"
+                    radius: "10dp"
+                    input_type: "number"
+                    input_filter: "int"
+        CustomBoxLayout:
+            adaptive_height: True
+            orientation: "vertical"
+            spacing: "10sp"
+            CustomButton:
+                id: btn
+                size_hint_y: None
+                height: "45dp"
+                radius: self.height / 2
+                text: "Continue"
+                bold: True
+                on_release: root.manager.current = "otp screen"
+            CustomButton:
+                adaptive_height: True
+                text_size: self.width, None
+                text: "Continue as guest"
+                color: app.theme_cls.primary_color
+                halign: "center"
+                -bg_color: 0, 0, 0, 0
+                underline: True

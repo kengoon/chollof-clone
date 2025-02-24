@@ -1,1 +1,120 @@
-<HomeScreen>
+<RestaurantScreen>
+    name: "restaurant screen"
+    BoxLayout:
+        orientation: "vertical"
+        BoxLayout:
+            size_hint_y: None
+            height: self.minimum_height
+            padding: "20dp"
+            BoxLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                padding: "10dp"
+                canvas:
+                    Color:
+                        rgba: 0, 0, 0, .1
+                    SmoothRoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 2]
+                TextInput:
+                    size_hint_y: None
+                    height: self.minimum_height
+                    background_active: ""
+                    background_color: 0, 0, 0, 0
+                    cursor_color: app.theme_cls.primary_color
+                    font_size: "14sp"
+        RealRecycleView
+            id: rv
+            root: root
+            viewclass: "RestaurantList"
+            data: [{}] * 30
+            do_scroll_x: False
+            effect_cls: LowerScrollEffect
+            scroll_distance: 0
+            bar_width: 0
+#            on_overscroll_up: root.paginate_restaurants()
+            RecycleBoxLayout:
+                id: rb
+                root: root
+                orientation: 'vertical'
+                size_hint_y: None
+                size: self.minimum_size
+                default_size_hint: 1, None
+                # magic value for the default height of the message
+                default_size: 0, "200dp"
+                spacing: "20dp"
+                padding: "20dp", "20dp", "20dp", "100dp"
+#    MDCircularProgressIndicator:
+#        id: pi
+#        active: True
+#        line_width: 1.5
+#        size_hint: None, None
+#        size: "40dp", "40dp"
+#        pos_hint: {"center_x": .5}
+#        y: root.height/2
+
+
+<RestaurantList>:
+    orientation: "vertical"
+    spacing: "5dp"
+    CoverImage:
+        source: root.cover_image
+        radius: "16dp"
+        color:
+            "white" \
+            if root.opening_time < str(datetime.now().time()) < root.closing_time \
+            else "grey"
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+        spacing: "5dp"
+        orientation: "vertical"
+        padding: "2dp"
+        BoxLayout:
+            size_hint_y: None
+            height: self.minimum_height
+            spacing: "10dp"
+            CustomLabel:
+                text: root.business_name
+                adaptive_height: True
+                shorten: True
+                shorten_from: "right"
+                bold: True
+            CustomLabel:
+                text:
+                    root.category \
+                    if root.opening_time < str(datetime.now().time()) < root.closing_time \
+                    else "Closed"
+                font_size: "12sp"
+                adaptive_size: True
+                bg_color: app.theme_cls.primary_color[:3] + [.1]
+                padding: "5dp"
+                radius: "6dp"
+                bold: True
+        CustomLabel:
+            text:
+                "Starting at ₦" + root.starting_price \
+                if root.opening_time < str(datetime.now().time()) < root.closing_time \
+                else "Opens between " + root.opening_time + " - " + root.closing_time
+            adaptive_height: True
+            font_size: "14sp"
+
+#<CustomLabel@Label>:
+#    bg_color: 0, 0, 0, 0
+#    radius: []
+#    canvas:
+#        PushMatrix
+##        Rotate:
+##            angle: 0
+##            origin: self.center
+#        Color:
+#            rgba: self.bg_color
+#        SmoothRoundedRectangle:
+#            size: self.size
+#            pos: self.pos
+#            # FIXME: Sometimes the radius has the value [], which get a
+#            # `GraphicException:
+#            #     Invalid radius value, must be list of tuples/numerics` error`
+#            radius: self.radius
+#        PopMatrix

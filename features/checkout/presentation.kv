@@ -1,0 +1,220 @@
+<CheckoutScreen>
+    name: 'checkout screen'
+    BoxLayout:
+        orientation: "vertical"
+        ScrollView:
+            effect_cls: LowerScrollEffect
+            do_scroll_x: False
+            bar_width: 0
+            scroll_distance: 0
+            CustomBoxLayout:
+                spacing: "15dp"
+                padding: "20dp", "40dp", "20dp", "80dp"
+                adaptive_height: True
+                orientation: "vertical"
+                CustomLabel:
+                    text: "Checkout"
+                    font_size: "32sp"
+                    adaptive_height: True
+                CustomLabel:
+                    text: "Your Order"
+                    font_size: "18sp"
+                    bold: True
+                    adaptive_height: True
+                CustomBoxLayout:
+                    id: order_container
+                    adaptive_height: True
+                    orientation: "vertical"
+                    spacing: "20dp"
+                    padding: 0, 0, 0, "20dp"
+                ListCheckout:
+                    adaptive_height: True
+                    padding: 0, "10dp"
+                    spacing: "10dp"
+                    Icon:
+                        icon: "map-marker"
+                        pos_hint: {"center_y": .5}
+                        -color: app.theme_cls.primary_color
+                    CustomBoxLayout:
+                        adaptive_height: True
+                        orientation: "vertical"
+                        spacing: "3dp"
+                        CustomLabel:
+                            adaptive_height: True
+                            shorten: True
+                            shorten_from: "right"
+                            text: "Your Location"
+                            font_size: "14sp"
+                        CustomLabel:
+                            adaptive_height: True
+                            shorten: True
+                            shorten_from: "right"
+                            text: "ITF Costain"
+                            font_size: "14sp"
+                            -color: app.theme_cls.disabled_color
+                        CustomLabel:
+                            adaptive_height: True
+                            shorten: True
+                            shorten_from: "right"
+                            text: "4th floor"
+                            font_size: "14sp"
+                            -color: app.theme_cls.disabled_color
+                    Icon:
+                        icon: "chevron-right"
+                        pos_hint: {"center_y": .5}
+
+                CustomBoxLayout:
+                    adaptive_height: True
+                    orientation: "vertical"
+                    padding: "15dp", "15dp"
+                    spacing: "3dp"
+                    canvas.before:
+                        Color:
+                            rgba: .7, .7, .7, .4
+                        SmoothRoundedRectangle:
+                            size: self.size
+                            pos: self.pos
+                            radius: [dp(16)]
+                    CustomLabel:
+                        text: "10-20 min"
+                        font_size: "14sp"
+                        adaptive_height: True
+                    CustomLabel:
+                        text: "As soon as possible"
+                        adaptive_height: True
+                        font_size: "12sp"
+                CustomBoxLayout:
+                    adaptive_height: True
+                    padding: 0, "20dp"
+                    spacing: "10dp"
+                    orientation: "vertical"
+                    CustomLabel:
+                        text: "Payment method"
+                        adaptive_height: True
+                        font_size: "18sp"
+                        bold: True
+                    ListCheckout:
+                        adaptive_height: True
+                        padding: 0, "15dp"
+                        spacing: "10dp"
+#                        on_release: root.open_payment_menu(list_item_text)
+                        Icon:
+                            icon: "cash-multiple"
+                            pos_hint: {"center_y": .5}
+                            -color: app.theme_cls.primary_color
+                        CustomLabel:
+                            id: list_item_text
+                            adaptive_height: True
+                            shorten: True
+                            shorten_from: "right"
+                            text: "Pay on Delivery"
+                            font_size: "14sp"
+                            pos_hint: {"center_y": .5}
+                        Icon:
+                            icon: "chevron-down"
+                            pos_hint: {"center_y": .5}
+                CustomLabel:
+                    text: "Courier tip"
+                    adaptive_height: True
+                    font_size: "18sp"
+                    bold: True
+                CustomBoxLayout:
+                    adaptive_height: True
+                    spacing: "10dp"
+                    TipButton:
+                        id: tip0
+                        tip: "0"
+                        state: "down"
+#                        on_state: if args[1] == "down": root.calculate_courier_tip(0)
+                    TipButton:
+                        tip: "5"
+#                        on_state: if args[1] == "down": root.calculate_courier_tip(5)
+                    TipButton:
+                        tip: "10"
+#                        on_state: if args[1] == "down": root.calculate_courier_tip(10)
+                    TipButton:
+                        tip: "15"
+#                        on_state: if args[1] == "down": root.calculate_courier_tip(15)
+                CustomBoxLayout:
+                    adaptive_height: True
+                    padding: "20dp"
+                    spacing: "10dp"
+                    orientation: "vertical"
+                    canvas.before:
+                        Color:
+                            rgba: .7, .7, .7, .4
+                        SmoothRoundedRectangle:
+                            size: self.size
+                            pos: self.pos
+                            radius: [dp(16)]
+                    CustomLabel:
+                        text: "Summary"
+                        adaptive_height: True
+                        font_size: "18sp"
+                        bold: True
+                    SummaryList
+                        id: total_order_price
+                        title: "Products"
+                        price: "200"
+                    SummaryList
+                        title: "Delivery"
+                        price: "100"
+                    SummaryList
+                        title: "Service"
+                        price: "100"
+                    SummaryList
+                        id: tip_price
+                        title: "Courier tip"
+                        price: "0"
+                    SummaryList
+                        id: total_price
+                        title: "TOTAL"
+                        price: "400"
+                        bold: True
+                CustomButton:
+                    id: btn
+                    size_hint_y: None
+                    height: "45dp"
+                    radius: self.height / 2
+                    text: "Confirm Order"
+            #        on_release: root.confirm_checkout()
+
+<ListCheckout@TouchRippleButtonBehavior+CustomBoxLayout>
+
+<TipButton@ToggleButtonBehavior+CustomBoxLayout>:
+    adaptive_size: True
+    group: "tip"
+    tip: ""
+    allow_no_selection: False
+    canvas.before:
+        Color:
+            rgba: [.7, .7, .7, .4] if self.state == "normal" else app.theme_cls.primary_color
+        SmoothRoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [self.height / 2]
+    CustomLabel:
+        text: root.tip + " %"
+        adaptive_size: True
+        bold: False if root.state == "normal" else True
+        padding: "16dp", "10dp"
+        color:
+            app.theme_cls.text_color if root.state == "normal" else "white"
+
+<SummaryList@CustomBoxLayout>:
+    adaptive_height: True
+    title: ""
+    price: ""
+    font_size: "15sp"
+    bold: False
+    CustomLabel:
+        text: root.title
+        adaptive_height: True
+        font_size: root.font_size
+        bold: root.bold
+    CustomLabel:
+        text: "₦" + root.price
+        adaptive_height: True
+        halign: "right"
+        font_size: root.font_size
+        bold: root.bold
