@@ -14,6 +14,8 @@
             IconButton:
                 icon: "arrow-left"
                 bg_color: app.theme_cls.accent_color
+                on_release:
+                    app.theme_cls.theme_style = "Dark" if app.theme_cls.theme_style == "Light" else "Light"
             CustomButton:
                 adaptive_height: True
                 text_size: self.width, None
@@ -91,14 +93,29 @@
                     adaptive_height: True
                     orientation: "vertical"
                     spacing: "10sp"
-                    CustomButton:
-                        id: btn
+                    RelativeLayout:
                         size_hint_y: None
                         height: "45dp"
-                        radius: self.height / 2
-                        text: "Continue"
-                        bold: True
-                        on_release: root.create_account()
+                        CustomButton:
+                            id: btn
+                            size_hint_y: None
+                            height: "45dp"
+                            radius: self.height / 2
+                            disabled: bool(root._timeout)
+                            disabled_color: "white"
+                            -bg_color: app.theme_cls.disabled_color if self.disabled else app.theme_cls.primary_color
+                            text: "Continue" if root._timeout == 0 else "Try again in {}s".format(root._timeout)
+                            bold: True
+                            on_release: root.prepare_account_creation()
+                        CircularProgressIndicator:
+                            id: spinner
+                            active: False
+                            color: "white"
+                            size_hint: None, None
+                            size: "20dp", "20dp"
+                            pos_hint: {"center_y": .5}
+                            x: btn.width - (dp(30) + dp(10))
+                            line_width: 2
                     CustomLabel:
                         text:
                             f"By signing up, you agree to Chollof's [color={primary_color}]Terms of use[/color]"\

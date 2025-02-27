@@ -3,7 +3,7 @@ __all__ = ('OtpSheet',)
 from kivy.animation import Animation
 from kivy.clock import mainthread
 from kivy.metrics import dp
-from kivy.properties import VariableListProperty, NumericProperty, StringProperty
+from kivy.properties import VariableListProperty, NumericProperty, StringProperty, BooleanProperty
 from kivy.clock import ClockEvent, Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
@@ -19,11 +19,12 @@ clock: ClockEvent = None
 
 
 class OtpSheet(BoxLayout, AdaptiveBehavior):
-    __events__ = ("on_open", "on_dismiss", "on_submit_otp")
+    __events__ = ("on_open", "on_dismiss", "on_submit_otp", "on_resend_otp")
 
     radius = VariableListProperty(["20dp", "20dp", 0, 0])
     timeout = NumericProperty(60)
     phone_number = StringProperty("08136346373")
+    is_open = BooleanProperty(False)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -41,7 +42,10 @@ class OtpSheet(BoxLayout, AdaptiveBehavior):
             overlay_color=(0, 0, 0, .4),
         )
 
+    @mainthread
     def open(self):
+        if self.is_open:
+            return
         self.modalview.open()
         Window.add_widget(self)
         self._open()
@@ -51,11 +55,17 @@ class OtpSheet(BoxLayout, AdaptiveBehavior):
         anim = Animation(y=0, duration=.2)
         anim.bind(on_complete=lambda *_: clock())
         anim.start(self)
+        self.is_open = True
+        self.dispatch("on_open", self)
 
+    @mainthread
     def dismiss(self):
+        if not self.is_open:
+            return
         anim = Animation(y=-self.height - dp(50), duration=.2)
         anim.bind(on_complete=self._dismiss)
         anim.start(self)
+        self.is_open = False
 
     def _dismiss(self, *_):
         Window.remove_widget(self)
@@ -65,22 +75,28 @@ class OtpSheet(BoxLayout, AdaptiveBehavior):
     def submit_otp(self):
         if self.ids.spinner.active:
             return
-        print(self.ids.spinner.active)
         self.ids.spinner.active = True
         otp = self.ids.otp.text
         self.dispatch("on_submit_otp", otp)
 
+    def resend_otp(self):
+        self.dispatch("on_resend_otp")
+        self.timeout = self.property("timeout").defaultvalue
+        clock()
+
+    @mainthread
     def stop_spinner(self):
-        if not self.ids.spinner.active:
-            return
         self.ids.spinner.active = False
 
-    def on_open(self, *args):
+    def on_open(self, instance):
         ...
 
-    def on_dismiss(self, *args):
+    def on_dismiss(self, instance):
         ...
 
     def on_submit_otp(self, otp):
+        pass
+
+    def on_resend_otp(self):
         pass
 

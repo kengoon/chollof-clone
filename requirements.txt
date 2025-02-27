@@ -1,2 +1,4 @@
 kivy
 sjfirebase
+asynckivy
+kvdroid

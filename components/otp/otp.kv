@@ -83,6 +83,7 @@
             -bg_color: app.theme_cls.accent_color
             -color: app.theme_cls.primary_color
             font_size: "14sp"
+            on_release: root.resend_otp()
     CustomButton:
         id: btn
         size_hint_y: None
@@ -100,4 +101,4 @@
             color: "white"
             size: "20dp", "20dp"
             pos: self.parent.width - dp(20), (self.parent.height / 2) + dp(10)
-            line_width: 1.5
+            line_width: 2

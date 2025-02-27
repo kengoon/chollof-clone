@@ -1,9 +1,8 @@
 from kivy.properties import DictProperty
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import ScreenManager
 from importlib import import_module
 from kivy.lang import Builder
 from os.path import join, dirname, basename
-from kivy.graphics import StencilPop
 
 Builder.load_file(join(dirname(__file__), basename(__file__).split(".")[0] + ".kv"))
 

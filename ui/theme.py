@@ -20,7 +20,7 @@ class ThemeManager(EventDispatcher):
     secondary_color_dark = ColorProperty()
     accent_color = ColorProperty()
     accent_color_light = ColorProperty([0, 0, 0, .05])
-    accent_color_dark = ColorProperty([1, 1, 1, .05])
+    accent_color_dark = ColorProperty([1, 1, 1, .08])
     shadow_color = ColorProperty()
     shadow_color_light = ColorProperty([0, 0, 0, .65])
     shadow_color_dark = ColorProperty([1, 1, 1, .65])

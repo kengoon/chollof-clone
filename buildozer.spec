@@ -205,8 +205,7 @@ android.add_resources = res
 # (list) Gradle dependencies to add
 android.gradle_dependencies = io.github.simplejnius:sjfirebase:1.3.0,
     com.google.firebase:firebase-auth,com.google.firebase:firebase-firestore,
-    androidx.appcompat:appcompat:1.7.0,com.google.android.play:integrity:1.4.0,
-    androidx.browser:browser:1.8.0
+    androidx.appcompat:appcompat:1.7.0,androidx.browser:browser:1.8.0
 
 # (bool) Enable AndroidX support. Enable when 'android.gradle_dependencies'
 # contains an 'androidx' package, or any package from Kotlin source.
@@ -311,6 +310,12 @@ android.allow_backup = True
 
 # (str) The format used to package the app for release mode (aab or apk or aar).
 android.release_artifact = apk
+
+# (str) A display cutout is an area on some devices that extends into the display surface.
+# It allows for an edge-to-edge experience while providing space for important sensors on the front of the device.
+# Available options for Android API >= 28 are "default, shortEdges, never" and defaults to never.
+# Android documentation: https://developer.android.com/develop/ui/views/layout/display-cutout
+android.display_cutout = shortEdge
 
 # (str) The format used to package the app for debug mode (apk or aar).
 # android.debug_artifact = apk
