@@ -6,7 +6,7 @@ from kivy.lang import Builder
 from os.path import join, dirname, basename
 
 from sjfirebase.jclass.filter import Filter
-from sjfirebase.tools.mixin import PhoneMixin, FirestoreMixin, AuthMixin
+from sjfirebase.tools.mixin import PhoneMixin, FirestoreMixin, AuthMixin, UserMixin
 from components.otp import OtpSheet
 from kivy.clock import mainthread, Clock, ClockEvent
 
@@ -14,7 +14,7 @@ Builder.load_file(join(dirname(__file__), basename(__file__).split(".")[0] + ".k
 clock: ClockEvent = None
 
 
-class SignupScreen(BaseScreen, AuthMixin, PhoneMixin, FirestoreMixin):
+class SignupScreen(BaseScreen, AuthMixin, PhoneMixin, FirestoreMixin, UserMixin):
     _timeout = NumericProperty(0)
 
     def __init__(self, **kwargs):
@@ -97,6 +97,7 @@ class SignupScreen(BaseScreen, AuthMixin, PhoneMixin, FirestoreMixin):
                 self.verify_number_with_code(self.verification_id, otp),
                 lambda suc, err: (
                     (
+                        self.set_document(f"users/{self.get_uid()}", data, lambda *_: None),
                         sheet.stop_spinner(),
                         sheet.dismiss(),
                         mainthread(lambda: setattr(self.manager, "current", "restaurant screen"))()
@@ -114,18 +115,9 @@ class SignupScreen(BaseScreen, AuthMixin, PhoneMixin, FirestoreMixin):
                 listener,
             )
         )
-        self.add_document(
-            "users", data,
-            lambda success, error: (
-                self.start_phone_number_verification(
-                    phone_number,
-                    timeout,
-                    listener,
-                )
-                if success
-                else (
-                    self.toast(error),
-                    mainthread(lambda: setattr(self.ids.spinner, "active", False))(),
-                )
-            )
+
+        self.start_phone_number_verification(
+            phone_number,
+            timeout,
+            listener,
         )

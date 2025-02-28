@@ -1,3 +1,4 @@
+from kivy import platform
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.loader import Loader
@@ -25,7 +26,13 @@ class ChollofApp(App):
 
     def build(self):
         sm = AppScreenManager(transition=SharedAxisTransition())
-        sm.current = "signup screen"
+        if platform == "android":
+            from sjfirebase.tools.mixin import UserMixin
+            if user := UserMixin().get_current_user():
+                user.reload()
+                sm.current = "restaurant screen"
+                return sm
+        sm.current = "login screen"
         return sm
 
 
