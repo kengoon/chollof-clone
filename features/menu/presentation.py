@@ -8,20 +8,21 @@ from kivy.uix.behaviors import TouchRippleButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.uix.screenmanager import Screen
+from features.basescreen import BaseScreen
 
 from components.behaviors import AdaptiveBehavior
 from components.scrim import DialogScrim
 from libs import shorten_text
+from sjfirebase.tools.mixin import FirestoreMixin
 
 Builder.load_file(join(dirname(__file__), basename(__file__).split(".")[0] + ".kv"))
 
 
 class MenuList(RecycleDataViewBehavior, TouchRippleButtonBehavior, BoxLayout):
-    price = NumericProperty(200.00)
-    meal = StringProperty("Amala")
-    meal_description = StringProperty("Best meal ever with 2 meat")
-    image = StringProperty("https://nsacc.org.ng/wp-content/uploads/2021/07/Osogbo-Nigeria.jpeg")
+    price = NumericProperty()
+    meal = StringProperty()
+    meal_description = StringProperty()
+    image = StringProperty()
     content_text = StringProperty()
     data = None
 
@@ -53,16 +54,27 @@ class ExtraList(BoxLayout, AdaptiveBehavior):
     quantity = BoundedNumericProperty(1, min=1, max=5, errorhandler=lambda x: 5 if x > 5 else 1)
 
 
-class MenuScreen(Screen):
+class MenuScreen(BaseScreen, FirestoreMixin):
     is_sheet_open = BooleanProperty(False)
     meal_id = StringProperty()
     restaurant_id = StringProperty()
+
+    def on_enter(self, *args):
+        self.ids.cover_image.source = self.get_extra("cover_image")
+        self.restaurant_id = self.get_extra("document_id")
+        self.ids.business_name.text = self.get_extra("business_name")
+        self.ids.starting_price.text = str(self.get_extra("starting_price"))
+        if not self.ids.rv.data:
+            self.get_pagination_of_documents(
+                f"vendor/RMol1naULxRQl40TRXuy7q37yJ12/menu",
+                25,
+                lambda _, data: setattr(self.ids.rv, "data", data)
+            )
 
     def open_sheet(self, data):
         if self.is_sheet_open:
             return
         self.is_sheet_open = True
-        # self.ids.bottom_sheet.set_state("toggle")
         self.add_widget(DialogScrim(), index=1)
         Animation(y=0, d=.2).start(self.ids.bottom_sheet)
         self.add_meal(data)

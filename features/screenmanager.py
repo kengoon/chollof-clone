@@ -25,6 +25,9 @@ class AppScreenManager(ScreenManager):
             "restaurant screen": {
                 "presentation": ("features.restaurant.presentation", "RestaurantScreen")
             },
+            "menu screen": {
+                "presentation": ("features.menu.presentation", "MenuScreen")
+            }
         }
     )
 

@@ -15,7 +15,7 @@ UP = 4  # finger and content moves down (scroll bar moves up) to see the very to
 NULL = 0  # finger or scroll bar or content is not moving
 
 
-class RealRecycleView(RecycleView, StencilBehavior):
+class RealRecycleView(RecycleView):
     do_swipe = BooleanProperty(False)
     swipe_direction = OptionProperty("horizontal", options=["horizontal", "vertical"], allownone=False)
     effect_cls = ObjectProperty(LowerDampedScrollEffect, allownone=True)

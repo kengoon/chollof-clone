@@ -104,7 +104,7 @@
                             disabled: bool(root._timeout)
                             disabled_color: "white"
                             -bg_color: app.theme_cls.disabled_color if self.disabled else app.theme_cls.primary_color
-                            text: "Continue" if root._timeout == 0 else "Try again in {}s".format(root._timeout)
+                            text: "" if spinner.active else "Continue" if root._timeout == 0 else "Try again in {}s".format(root._timeout)
                             bold: True
                             on_release: root.prepare_account_creation()
                         CircularProgressIndicator:
@@ -113,8 +113,7 @@
                             color: "white"
                             size_hint: None, None
                             size: "20dp", "20dp"
-                            pos_hint: {"center_y": .5}
-                            x: btn.width - dp(40)
+                            pos_hint: {"center": [.5, .5]}
                             line_width: 2
                     CustomLabel:
                         text:

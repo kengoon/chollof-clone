@@ -46,12 +46,14 @@ class ThemeManager(EventDispatcher):
             self.secondary_color = self.secondary_color_light
             self.accent_color = self.accent_color_light
             self.text_color = self.text_color_light
+            self.shadow_color = self.shadow_color_light
         else:
             self.bg_color = self.bg_color_dark
             self.primary_color = self.primary_color_dark
             self.secondary_color = self.secondary_color_dark
             self.accent_color = self.accent_color_dark
             self.text_color = self.text_color_dark
+            self.shadow_color = self.shadow_color_dark
 
         Window.clearcolor = self.bg_color
 

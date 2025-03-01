@@ -2,7 +2,6 @@
     name: 'menu screen'
     CoverImage:
         id: cover_image
-        source: "https://nsacc.org.ng/wp-content/uploads/2021/07/Osogbo-Nigeria.jpeg"
         size_hint_y: None
         height: root.height/4
         y: root.height - self.height
@@ -11,7 +10,9 @@
         y_: -cover_image.height + dp(20)
         y: self.y_
         padding: "20dp"
-        canvas.before:
+        canvas:
+            Color:
+                rgba: app.theme_cls.bg_color
             RoundedRectangle:
                 size: self.size
                 pos: self.pos
@@ -23,7 +24,6 @@
         effect_cls: LowerScrollEffect
         track_scroll_movement: True
         scroll_distance: 0
-        data: [{}] * 30
         bar_width: 0
         on_scroll_y: root.move_eb()
 #        on_overscroll_up: root.paginate_menu()
@@ -168,16 +168,6 @@
             Rectangle:
                 size: self.size
                 pos: self.pos
-        canvas.before:
-            Color:
-                rgba: 0, 0, 0, .65
-            BoxShadow:
-                pos: self.pos
-                size: self.size
-                offset: 0, 0
-                spread_radius: -dp(20), -dp(20)
-                border_radius: [dp(20), dp(20), 0, 0]
-                blur_radius: 60
 #        on_close: root.on_sheet_closed()
         BoxLayout:
             orientation: "vertical"
@@ -296,12 +286,12 @@
                 CustomButton:
                     id: btn
                     total_price: 0
-                    quantity: quantity.quantity
+                    qty: quantity.quantity
                     size_hint_y: None
                     height: "45dp"
                     radius: "8dp"
                     on_total_price: self.text = f"Add ₦{args[1]:,.0f}"
-                    on_quantity: self.total_price = (price.price * args[1]) + price.pack
+                    on_qty: self.total_price = (price.price * args[1]) + price.pack
 #                    on_release: root.add_meal_to_cart()
 
 

@@ -3,6 +3,8 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.loader import Loader
 from kivy.properties import ObjectProperty
+
+from components.bar import win_md_bnb
 from components.transition import SharedAxisTransition
 from ui.theme import ThemeManager
 from components.factory_register import register_factory
@@ -22,7 +24,7 @@ class ChollofApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls = ThemeManager()
-        self.theme_cls.theme_style = "Dark"
+        # self.theme_cls.theme_style = "Dark"
 
     def build(self):
         sm = AppScreenManager(transition=SharedAxisTransition())
@@ -34,6 +36,30 @@ class ChollofApp(App):
                 return sm
         sm.current = "login screen"
         return sm
+
+    def on_start(self):
+        win_md_bnb.create_bnb(
+            tabs=[
+                {
+                    "icon": "storefront",
+                    "icon_variant": "storefront-outline",
+                    "text": "Restaurants",
+                    "active": True,
+                },
+                # {
+                #     "icon": "bike-fast",
+                #     "icon_variant": "bike-fast",
+                #     "text": "Order",
+                #     "active": False,
+                #     "on_release": lambda _: self.add_screen("order screen")
+                # },
+                {
+                    "icon": "cog",
+                    "icon_variant": "cog-outline",
+                    "text": "Settings",
+                }
+            ],
+        )
 
 
 if __name__ == '__main__':

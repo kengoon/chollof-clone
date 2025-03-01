@@ -40,6 +40,7 @@ class OtpSheet(BoxLayout, AdaptiveBehavior):
             background_color=(0, 0, 0, 0),
             background="",
             overlay_color=(0, 0, 0, .4),
+            on_dismiss=lambda _: self.dismiss()
         )
 
     @mainthread

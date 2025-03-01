@@ -1,4 +1,4 @@
-__all__ = ("CustomLabel", "Icon")
+__all__ = ("CustomLabel", "Icon", "Badge")
 
 from kivy.core.clipboard import Clipboard
 from kivy.properties import BooleanProperty, StringProperty, VariableListProperty, \
@@ -29,3 +29,7 @@ class CustomLabel(AdaptiveBehavior, Label):
 class Icon(CustomLabel):
     icon = StringProperty()
     font_name = StringProperty("assets/fonts/materialdesignicons-webfont.ttf")
+
+
+class Badge(CustomLabel):
+    pass

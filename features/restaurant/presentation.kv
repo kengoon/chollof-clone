@@ -5,30 +5,26 @@
         BoxLayout:
             size_hint_y: None
             height: self.minimum_height
-            padding: "20dp"
-            BoxLayout:
-                size_hint_y: None
-                height: self.minimum_height
-                padding: "10dp"
-                canvas:
-                    Color:
-                        rgba: 0, 0, 0, .1
-                    SmoothRoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [self.height / 2]
-                TextInput:
-                    size_hint_y: None
-                    height: self.minimum_height
-                    background_active: ""
-                    background_color: 0, 0, 0, 0
-                    cursor_color: app.theme_cls.primary_color
-                    font_size: "14sp"
+            padding: "20dp", "20dp", "20dp", 0
+            CustomButton:
+                id: tbtn
+                text_size: self.width, None
+                adaptive_size: True
+                padding: 0, "15dp"
+                radius: self.height / 2
+                halign: "center"
+                markup: True
+                text:
+                    f"[color={primary_color}][font={icon_path}]\U000F034E[/font][/color] " \
+                    f"Select location [font={icon_path}]\U000F0140[/font]"
+                -bg_color: 0, 0, 0, 0
+                font_size: "14sp"
+                -color: app.theme_cls.text_color
+
         RealRecycleView
             id: rv
             root: root
             viewclass: "RestaurantList"
-            data: [{}] * 30
             do_scroll_x: False
             effect_cls: LowerScrollEffect
             scroll_distance: 0
@@ -94,27 +90,8 @@
                 bold: True
         CustomLabel:
             text:
-                "Starting at ₦" + root.starting_price \
+                "Starting at ₦{}".format(root.starting_price) \
                 if root.opening_time < str(datetime.now().time()) < root.closing_time \
                 else "Opens between " + root.opening_time + " - " + root.closing_time
             adaptive_height: True
             font_size: "14sp"
-
-#<CustomLabel@Label>:
-#    bg_color: 0, 0, 0, 0
-#    radius: []
-#    canvas:
-#        PushMatrix
-##        Rotate:
-##            angle: 0
-##            origin: self.center
-#        Color:
-#            rgba: self.bg_color
-#        SmoothRoundedRectangle:
-#            size: self.size
-#            pos: self.pos
-#            # FIXME: Sometimes the radius has the value [], which get a
-#            # `GraphicException:
-#            #     Invalid radius value, must be list of tuples/numerics` error`
-#            radius: self.radius
-#        PopMatrix
