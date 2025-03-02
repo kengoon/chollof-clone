@@ -2,14 +2,13 @@ __all__ = ("MenuScreen",)
 from os.path import join, dirname, basename
 import asynckivy as ak
 from kivy.animation import Animation
-from kivy.metrics import dp
+from kivy.metrics import dp, sp
 from kivy.properties import StringProperty, NumericProperty, BooleanProperty, BoundedNumericProperty
 from kivy.uix.behaviors import TouchRippleButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from features.basescreen import BaseScreen
-
 from components.behaviors import AdaptiveBehavior
 from components.scrim import DialogScrim
 from libs import shorten_text
@@ -24,11 +23,11 @@ class MenuList(RecycleDataViewBehavior, TouchRippleButtonBehavior, BoxLayout):
     meal_description = StringProperty()
     image = StringProperty()
     content_text = StringProperty()
+    document_id = StringProperty()
     data = None
 
     def refresh_view_attrs(self, rv, index, data):
         self.data = data
-        self.data = dict(price=self.price, meal=self.meal, meal_description=self.meal_description, price_description="Best price you can get", pack=200, image=self.image, content_text=self.content_text)
         super().refresh_view_attrs(rv, index, data)
 
     def on_release(self, *args) -> None:
@@ -68,7 +67,24 @@ class MenuScreen(BaseScreen, FirestoreMixin):
             self.get_pagination_of_documents(
                 f"vendor/RMol1naULxRQl40TRXuy7q37yJ12/menu",
                 25,
-                lambda _, data: setattr(self.ids.rv, "data", data)
+                lambda _, data: setattr(
+                    self.ids.rv, "data", [
+                        menu | {
+                            "content_text": shorten_text(
+                                menu.get("meal_description", ""),
+                                # get the height of the menu list (120dp),
+                                # add the left and right padding of RecycleBoxLayout
+                                # ((20dp, 20dp) = 40dp) to the menu list
+                                # and finally subtract it from the screen width
+                                self.width - (dp(120) + dp(40)),
+                                lines=2,
+                                suffix="...",
+                                font_size=sp(12)
+                            )
+                        }
+                        for menu in data
+                    ]
+                )
             )
 
     def open_sheet(self, data):
@@ -78,7 +94,7 @@ class MenuScreen(BaseScreen, FirestoreMixin):
         self.add_widget(DialogScrim(), index=1)
         Animation(y=0, d=.2).start(self.ids.bottom_sheet)
         self.add_meal(data)
-        # self.meal_id = data["meal_id"]
+        self.meal_id = data["document_id"]
 
     def add_meal(self, data):
         self.ids.meal.text = data["meal"]
